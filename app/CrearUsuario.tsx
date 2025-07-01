@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
 import axios from 'axios';
+import { useRouter } from 'expo-router';
+
 
 export default function CrearUsuario() {
   const [nombre, setNombre] = useState('');

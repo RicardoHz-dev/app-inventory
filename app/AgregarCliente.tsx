@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
+import axios from 'axios';
+import { useRouter } from 'expo-router';
 
 export default function AgregarCliente() {
   const [nombre, setNombre] = useState('');
@@ -7,73 +9,54 @@ export default function AgregarCliente() {
   const [telefono, setTelefono] = useState('');
   const [direccion, setDireccion] = useState('');
 
-  const handleAgregar = () => {
-    if (!nombre || !correo || !telefono || !direccion) {
-      Alert.alert('Error', 'Por favor completa todos los campos');
+  const router = useRouter();
+
+  const handleGuardar = async () => {
+    if (!nombre) {
+      Alert.alert('Error', 'El nombre es obligatorio');
       return;
     }
 
-    // Aquí puedes conectar al backend con axios.post()
-    Alert.alert(
-      'Cliente agregado',
-      `Nombre: ${nombre}\nCorreo: ${correo}\nTeléfono: ${telefono}\nDirección: ${direccion}`
-    );
+    try {
+      const response = await axios.post('http://192.168.0.185:8000/api/clientes/movil', {
+        nombre,
+        correo,
+        telefono,
+        direccion,
+      });
 
-    // Limpiar campos
-    setNombre('');
-    setCorreo('');
-    setTelefono('');
-    setDireccion('');
+      if (response.data.status === 'success') {
+        Alert.alert('Éxito', 'Cliente agregado correctamente');
+        setNombre('');
+        setCorreo('');
+        setTelefono('');
+        setDireccion('');
+        router.push('/Menu'); // ⬅️ redirige al menú
+      } else {
+        Alert.alert('Error', response.data.message || 'No se pudo agregar el cliente');
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'No se pudo conectar al servidor');
+    }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Agregar Nuevo Cliente</Text>
+      <Text style={styles.title}>Agregar Cliente</Text>
 
-      <TextInput
-        placeholder="Nombre completo"
-        value={nombre}
-        onChangeText={setNombre}
-        style={styles.input}
-      />
+      <TextInput placeholder="Nombre" value={nombre} onChangeText={setNombre} style={styles.input} />
+      <TextInput placeholder="Correo" value={correo} onChangeText={setCorreo} style={styles.input} keyboardType="email-address" />
+      <TextInput placeholder="Teléfono" value={telefono} onChangeText={setTelefono} style={styles.input} keyboardType="phone-pad" />
+      <TextInput placeholder="Dirección" value={direccion} onChangeText={setDireccion} style={styles.input} />
 
-      <TextInput
-        placeholder="Correo electrónico"
-        value={correo}
-        onChangeText={setCorreo}
-        keyboardType="email-address"
-        style={styles.input}
-      />
-
-      <TextInput
-        placeholder="Teléfono"
-        value={telefono}
-        onChangeText={setTelefono}
-        keyboardType="phone-pad"
-        style={styles.input}
-      />
-
-      <TextInput
-        placeholder="Dirección"
-        value={direccion}
-        onChangeText={setDireccion}
-        style={styles.input}
-      />
-
-      <Button title="Agregar cliente" onPress={handleAgregar} />
+      <Button title="Guardar Cliente" onPress={handleGuardar} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 20, backgroundColor: '#fff' },
+  container: { flex: 1, padding: 20, backgroundColor: '#fff', justifyContent: 'center' },
   title: { fontSize: 22, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
-  input: {
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    backgroundColor: '#fff',
-  },
+  input: { height: 40, borderWidth: 1, borderColor: '#ccc', paddingHorizontal: 10, marginBottom: 10 },
 });

@@ -15,12 +15,23 @@ export default function MenuScreen() {
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button title="Generar factura" onPress={() => router.push('/Inventory')} />
+        <Button title="Ver todos los usuarios" onPress={() => router.push('/Usuarios')} />
       </View>
+
 
       <View style={styles.buttonContainer}>
         <Button title="Agregar nuevo cliente" onPress={() => router.push('/AgregarCliente')} />
       </View>
+
+      <View style={styles.buttonContainer}>
+        <Button title="Ver todos los clientes" onPress={() => router.push('/Clientes')} />
+      </View>
+
+
+      <View style={styles.buttonContainer}>
+        <Button title="Generar factura" onPress={() => router.push('/Inventory')} />
+      </View>
+      
     </View>
   );
 }
