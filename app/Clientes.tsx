@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, ActivityIndicator, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import axios from 'axios';
-import { Feather } from '@expo/vector-icons'; // Iconos
+import { Feather, Ionicons } from '@expo/vector-icons'; // Iconos
 import { router } from 'expo-router';
 
 interface Cliente {
@@ -38,14 +38,14 @@ export default function Clientes() {
 
   const handleEditar = (cliente: Cliente) => {
     router.push({
-        pathname: '/EditarCliente',
-        params: {
-            id: cliente.id.toString(),
-            nombre: cliente.nombre,
-            correo: cliente.correo,
-            telefono: cliente.telefono,
-            direccion: cliente.direccion,
-        },
+      pathname: '/EditarCliente',
+      params: {
+        id: cliente.id.toString(),
+        nombre: cliente.nombre,
+        correo: cliente.correo,
+        telefono: cliente.telefono,
+        direccion: cliente.direccion,
+      },
     });
   };
 
@@ -98,11 +98,22 @@ export default function Clientes() {
 
   return (
     <View style={styles.container}>
+      {/* Botón de cerrar */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => router.push('/Menu')}>
+          <Ionicons name="close" size={28} color="red" />
+        </TouchableOpacity>
+      </View>
+
       <Text style={styles.titulo}>Clientes Registrados</Text>
       {cargando ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
-        <FlatList data={clientes} keyExtractor={(item) => item.id.toString()} renderItem={renderItem} />
+        <FlatList
+          data={clientes}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderItem}
+        />
       )}
     </View>
   );
@@ -110,6 +121,12 @@ export default function Clientes() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: '#fff' },
+  header: {
+    position: 'absolute',
+    top: 40,
+    right: 20,
+    zIndex: 10,
+  },
   titulo: { fontSize: 22, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
   item: {
     padding: 10,

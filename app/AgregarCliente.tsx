@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, Alert, StyleSheet, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import { useRouter } from 'expo-router';
 
@@ -31,7 +32,7 @@ export default function AgregarCliente() {
         setCorreo('');
         setTelefono('');
         setDireccion('');
-        router.push('/Menu'); // ⬅️ redirige al menú
+        router.push('/Menu');
       } else {
         Alert.alert('Error', response.data.message || 'No se pudo agregar el cliente');
       }
@@ -43,7 +44,13 @@ export default function AgregarCliente() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Agregar Cliente</Text>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => router.push('/Menu')}>
+          <Ionicons name="close" size={28} color="red" />
+        </TouchableOpacity>
+      </View>
+
+      <Text style={styles.title}>Complete los campos</Text>
 
       <TextInput placeholder="Nombre" value={nombre} onChangeText={setNombre} style={styles.input} />
       <TextInput placeholder="Correo" value={correo} onChangeText={setCorreo} style={styles.input} keyboardType="email-address" />
@@ -57,6 +64,12 @@ export default function AgregarCliente() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: '#fff', justifyContent: 'center' },
+  header: {
+    position: 'absolute',
+    top: 40,
+    right: 20,
+    zIndex: 10,
+  },
   title: { fontSize: 22, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
   input: { height: 40, borderWidth: 1, borderColor: '#ccc', paddingHorizontal: 10, marginBottom: 10 },
 });
