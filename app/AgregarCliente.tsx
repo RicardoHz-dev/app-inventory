@@ -5,19 +5,23 @@ import axios from 'axios';
 import { useRouter } from 'expo-router';
 
 export default function AgregarCliente() {
+  // Se crean variables de estado para guardar los datos del cliente
   const [nombre, setNombre] = useState('');
   const [correo, setCorreo] = useState('');
   const [telefono, setTelefono] = useState('');
   const [direccion, setDireccion] = useState('');
 
-  const router = useRouter();
+  const router = useRouter(); // Para navegar entre pantallas
 
+
+  // Función para manejar el guardado del cliente
   const handleGuardar = async () => {
     if (!nombre) {
       Alert.alert('Error', 'El nombre es obligatorio');
       return;
     }
 
+    // Enviamos los datos al backend con axios.post
     try {
       const response = await axios.post('http://192.168.0.185:8000/api/clientes/movil', {
         nombre,
@@ -42,13 +46,16 @@ export default function AgregarCliente() {
     }
   };
 
+  // Interfaz 
   return (
+    // Boton de cierre
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.push('/Menu')}>
           <Ionicons name="close" size={28} color="red" />
         </TouchableOpacity>
       </View>
+
 
       <Text style={styles.title}>Complete los campos</Text>
 

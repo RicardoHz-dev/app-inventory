@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Feather, Ionicons } from '@expo/vector-icons'; // Iconos
 import { router } from 'expo-router';
 
+
 interface Cliente {
   id: number;
   nombre: string;
@@ -13,13 +14,15 @@ interface Cliente {
 }
 
 export default function Clientes() {
-  const [clientes, setClientes] = useState<Cliente[]>([]);
+  // Estados y carga de datos
+  const [clientes, setClientes] = useState<Cliente[]>([]); // lista de clientes
   const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
-    obtenerClientes();
+    obtenerClientes(); // Se ejecuta al iniciar el componente
   }, []);
 
+  // llamada al backend para obtener los clientes
   const obtenerClientes = async () => {
     try {
       const response = await axios.get('http://192.168.0.185:8000/api/clientes/movil');
@@ -49,6 +52,7 @@ export default function Clientes() {
     });
   };
 
+  // Función para eliminar un cliente
   const handleEliminar = async (id: number) => {
     Alert.alert(
       'Confirmar eliminación',
@@ -77,6 +81,7 @@ export default function Clientes() {
     );
   };
 
+  // Renderiza cada cliente en la lista
   const renderItem = ({ item }: { item: Cliente }) => (
     <View style={styles.item}>
       <View style={styles.info}>
@@ -85,6 +90,8 @@ export default function Clientes() {
         <Text>{item.telefono}</Text>
         <Text>{item.direccion}</Text>
       </View>
+
+        {/* Acciones de editar y eliminar */}
       <View style={styles.acciones}>
         <TouchableOpacity onPress={() => handleEditar(item)}>
           <Feather name="edit" size={24} color="blue" style={styles.icono} />

@@ -4,14 +4,18 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import axios from 'axios';
 import { Ionicons } from '@expo/vector-icons';
 
+// 
 export default function EditarCliente() {
+    // Obtenemos los parámetros de la URL
   const { id, nombre, correo, telefono, direccion } = useLocalSearchParams();
+  // Creamos estados para los campos del formulario
   const [nombreCliente, setNombre] = useState(nombre as string);
   const [email, setCorreo] = useState(correo as string);
   const [telefonoCliente, setTelefono] = useState(telefono as string);
   const [direccionCliente, setDireccion] = useState(direccion as string);
   const router = useRouter();
 
+  // Función para manejar la actualización del cliente
   const handleActualizar = async () => {
     if (!nombreCliente) {
       Alert.alert('Error', 'El nombre es obligatorio');

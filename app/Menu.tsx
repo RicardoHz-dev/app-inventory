@@ -17,7 +17,7 @@ export default function MenuScreen() {
         <Button title="Ver todos los usuarios" onPress={() => router.push('/Usuarios')} />
       </View>
 
-
+      {/* CLIENTES */}
       <View style={styles.buttonContainer}>
         <Button title="Agregar nuevo cliente" onPress={() => router.push('/AgregarCliente')} />
       </View>
